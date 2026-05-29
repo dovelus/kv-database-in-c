@@ -4,10 +4,11 @@
 
 
 int main() {
-  kv_t *db = kv_init(16);
+  kv_t *table = kv_init(16);
 
-  printf("%p\n", db);
-
-  printf("DB Capacity: %ld\n", db->capacity);
+  printf("%p\n", table);
+  printf("DB Capacity: %ld\n", table->capacity);
+  
+  kv_put(table, "HEHE", "HAHA");
 }
  

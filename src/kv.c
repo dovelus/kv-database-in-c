@@ -1,5 +1,69 @@
-#include "kv.h"
+#include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "kv.h"
+
+size_t hash(char *val, int capacity) {
+  size_t hash = 0x13371337deadbeef;
+  
+  while(*val) {
+    hash ^= *val;
+    hash = hash << 8;
+    hash += *val;
+
+    val++;
+  }
+
+  return hash % capacity;
+}
+
+// fn kv_put
+// parmans:
+// - db: a pointer to the db
+// - key: a pointer to the key value
+// - values: a pointer to the value itself
+// return the index of the key, otherwise on
+// error, return -1, or not found return -2
+int kv_put(kv_t *db, char *key, char *value) {
+  if (!db || !key || !value) return -1;
+
+  size_t idx = hash(key, db->capacity);
+
+  for (int i = 0; i < db->capacity - 1; i++) {
+
+    size_t real_idx = (idx + i) % db->capacity;
+    
+    kv_entry_t *entry = &db->entries[real_idx];
+
+    // the key is already set, updating
+    if (entry->key && entry->key != TOMBSTONE && !strcmp(entry->key, key)) {
+      char *newval = strdup(value);
+      if (!newval) return -1;
+      entry->value = newval;
+      return real_idx;
+    }
+
+    // land in a slot that is "empty"
+    // null or tombstone
+    if (entry->key || entry->key == TOMBSTONE) {
+      char *newval = strdup(value);
+      char *newkey = strdup(key);
+      if (!newval || !newkey) {
+        free(newval);
+        free(newkey);
+        return -1;
+      }
+      entry->value = newval;
+      entry->key = newkey;
+      db->count++;
+      return real_idx;
+    }
+    
+  }
+
+  return -2;
+} 
 
 kv_t *kv_init(size_t capacity) {
   if (capacity == 0) return NULL;
@@ -20,5 +84,5 @@ kv_t *kv_init(size_t capacity) {
   return table;
   
 }
- 
+
 
