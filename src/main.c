@@ -39,7 +39,23 @@ int main() {
         table->entries[i].value);
     }
   }
+  
+  ret = kv_put(table, "HEHE3", "HOLA");
+  if (ret == -1 || ret == -2) {
+    printf("ret = %d\n",ret);
+  } else {
+    printf("ret = %d\n", ret);
+  }
 
+  for (int i = 0; i < table->capacity; i++) {
+    if (table->entries[i].key) {
+      printf("%s:%s\n",
+        table->entries[i].key,
+        table->entries[i].value);
+    }
+  }
+  
+  
   printf("COUNT: %ld\n", table->count);
 }
  
