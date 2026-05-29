@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "/home/dovelus/kv-database-in-c",
+    "command": "gcc -I./inc -o bin/kv src/kv.c",
+    "file": "src/kv.c"
+  }
+]
