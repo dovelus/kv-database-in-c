@@ -59,8 +59,15 @@ int main() {
   } else {
     printf("Key not found\n");
   }
-  
-  
+
+  printf("ALL ENTRIES:\n");
+  for (int i = 0; i < table->capacity; i++) {
+    if (table->entries[i].key) {
+      printf("%s:%s\n",
+        table->entries[i].key,
+        table->entries[i].value);
+    }
+  }  
   printf("COUNT: %ld\n", table->count);
 }
  
