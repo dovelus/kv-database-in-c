@@ -47,6 +47,13 @@ int main() {
     printf("ret = %d\n", ret);
   }
 
+  char *value = kv_get(table, "HEHE3");
+  if (value != NULL) {
+    printf("value for HEHE3 = %s\n", value);
+  } else {
+    printf("Key not found\n");
+  }
+
   for (int i = 0; i < table->capacity; i++) {
     if (table->entries[i].key) {
       printf("%s:%s\n",
