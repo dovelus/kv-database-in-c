@@ -112,6 +112,7 @@ int kv_delete(kv_t *db, char *key) {
 
      if (entry->key && entry->key != TOMBSTONE && !strcmp(entry->key, key)) {
          entry->key = TOMBSTONE;
+         db->capacity--;
          return 0;
      }
    }
