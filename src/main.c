@@ -24,22 +24,14 @@ int main() {
   } else {
     printf("ret = %d\n", ret);
   }
-  
+
   ret = kv_put(table, "HEHE3", "HAHA");
   if (ret == -1 || ret == -2) {
     printf("ret = %d\n",ret);
   } else {
     printf("ret = %d\n", ret);
   }
-  
-  for (int i = 0; i < table->capacity; i++) {
-    if (table->entries[i].key) {
-      printf("%s:%s\n",
-        table->entries[i].key,
-        table->entries[i].value);
-    }
-  }
-  
+
   ret = kv_put(table, "HEHE3", "HOLA");
   if (ret == -1 || ret == -2) {
     printf("ret = %d\n",ret);
@@ -54,12 +46,18 @@ int main() {
     printf("Key not found\n");
   }
 
-  for (int i = 0; i < table->capacity; i++) {
-    if (table->entries[i].key) {
-      printf("%s:%s\n",
-        table->entries[i].key,
-        table->entries[i].value);
-    }
+  int ret2 = kv_delete(table, "HEHE3");
+  if (ret2 != -1) {
+    printf("value for HEHE3 deleted\n");
+  } else {
+    printf("Key not found\n");
+  }
+
+  char *value2 = kv_get(table, "HEHE3");
+  if (value2 != NULL) {
+    printf("value for HEHE3 = %s\n", value2);
+  } else {
+    printf("Key not found\n");
   }
   
   

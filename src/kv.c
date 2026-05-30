@@ -65,8 +65,12 @@ int kv_put(kv_t *db, char *key, char *value) {
   return -2;
 }
 
-
- 
+// fn kv_get
+// parmans:
+// - db: a pointer to the db
+// - key: a pointer to the key value
+// return the a pointer to the vale, otherwise on
+// error, return NULL
 char *kv_get(kv_t *db, char *key) {
   if (!db || !key) return NULL;
 
@@ -85,6 +89,33 @@ char *kv_get(kv_t *db, char *key) {
      }
    }
   return NULL;
+}
+
+// fn kv_delete
+// parmans:
+// - db: a pointer to the db
+// - key: a pointer to the key value
+// return the a 0 on success delete, otherwise on
+// error, return -1
+int kv_delete(kv_t *db, char *key) {
+  if (!db || !key) return -1;
+
+  size_t idx = hash(key, db->capacity);
+
+  for (int i = 0; i < db->capacity - 1; i++) {
+     size_t real_idx = (idx + i) % db->capacity;
+
+     kv_entry_t *entry = &db->entries[real_idx];
+     if (entry == NULL) {
+       return -1;
+     }
+
+     if (entry->key && entry->key != TOMBSTONE && !strcmp(entry->key, key)) {
+         entry->key = TOMBSTONE;
+         return 0;
+     }
+   }
+  return -1;
 }
 
 
